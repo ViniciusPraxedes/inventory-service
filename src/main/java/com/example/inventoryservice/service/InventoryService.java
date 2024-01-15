@@ -119,6 +119,13 @@ public class InventoryService {
     // Being used by order service
     @Transactional(readOnly = true)
     public List<ItemResponse> isInStockManyItems(List<String> itemCodes){
+
+        //Check if items exist
+        for (int i = 0; i < itemCodes.size(); i++){
+            if (itemRepository.findByItemCode(itemCodes.get(i)).isEmpty()){
+                throw new IllegalStateException("Item with code:" + itemCodes.get(i) +" Not found");
+            }
+        }
         return itemRepository.findByItemCodeIn(itemCodes).stream()
                 .map(Item ->
                         ItemResponse.builder()
@@ -132,6 +139,14 @@ public class InventoryService {
     // Being used by order service
     public ResponseEntity<?> decreaseQuantityManyItems(List<String> itemCodes, List<Integer> amounts){
         List<Item> items = itemRepository.findByItemCodeIn(itemCodes);
+
+        // check if the amount - the quantity in the inventory is less than 0
+        for (int i = 0; i < amounts.size(); i++){
+            if (itemRepository.findByItemCode(itemCodes.get(i)).get().getQuantity()-amounts.get(i) < 0){
+                System.out.println(itemCodes.get(i));
+                return new ResponseEntity<>("There is not enough of the item: "+" in the inventory", HttpStatus.BAD_REQUEST);
+            }
+        }
 
         // Check if all items exist
         if (items.size() < itemCodes.size()) {
