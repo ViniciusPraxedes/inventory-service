@@ -17,7 +17,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 
     Optional<Item> findByItemCode(String itemCode);
 
-    Optional<Item> findAllByQuantityGreaterThan(Integer quantity);
+    List<Item> findAllByQuantityGreaterThan(Integer quantity);
 
     @Modifying
     @Query("UPDATE Item item SET item.quantity = item.quantity - :amount WHERE item.itemCode = :itemCode")

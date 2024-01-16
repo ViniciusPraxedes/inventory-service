@@ -107,7 +107,7 @@ public class InventoryService {
     }
 
     public List<ItemResponse> getAllItemsInStock() {
-        Optional<Item> itemsInStock = itemRepository.findAllByQuantityGreaterThan(0);
+        List<Item> itemsInStock = itemRepository.findAllByQuantityGreaterThan(0);
 
         return itemsInStock.stream()
                 .map(this::mapToItemResponse)
