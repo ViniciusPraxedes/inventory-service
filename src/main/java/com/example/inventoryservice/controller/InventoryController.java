@@ -64,7 +64,7 @@ public class InventoryController {
         return inventoryService.getItem(itemCode);
     }
 
-    @Operation(summary = "Change amount of item in the inventory by item code")
+    @Operation(summary = "Change quantity of item in the inventory by item code")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ItemResponse.class))),
             @ApiResponse(responseCode = "400", description = "Bad request, one or more parameters in the request is bad formatted", content = @Content),
@@ -72,9 +72,9 @@ public class InventoryController {
             @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden", content = @Content),
             @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found", content = @Content),
             @ApiResponse(responseCode = "500", description = "The code is broken", content = @Content)})
-    @PutMapping("/{itemCode}/{amount}")
-    public ItemResponse changeAmount(@PathVariable String itemCode, @PathVariable Integer amount){
-        return inventoryService.changeAmount(itemCode,amount);
+    @PutMapping("/{itemCode}/{quantity}")
+    public ItemResponse changeAmount(@PathVariable String itemCode, @PathVariable Integer quantity){
+        return inventoryService.changeAmount(itemCode,quantity);
     }
 
     @Operation(summary = "Gets all items that are in stock (All items which amount is greater than 0).")
